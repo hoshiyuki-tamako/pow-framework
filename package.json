@@ -1,0 +1,60 @@
+{
+  "name": "pow-framework",
+  "version": "0.0.1",
+  "description": "Proof of work framework",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "private": true,
+  "scripts": {
+    "test": "nyc ts-mocha --timeout=10000 --type-check --parallel test/**/**/*test.ts",
+    "lint": "eslint . --fix --ignore-path .gitignore",
+    "build": "tsc",
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "proof of work",
+    "framework",
+    "argon2",
+    "md5"
+  ],
+  "author": "hoshiyuki-tamako",
+  "license": "MIT",
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@testdeck/mocha": "^0.3.3",
+    "@types/argon2-browser": "^1.18.1",
+    "@types/chai": "^4.3.4",
+    "@types/chai-as-promised": "^7.1.5",
+    "@types/eslint": "^8.4.10",
+    "@types/lodash": "^4.14.191",
+    "@types/md5": "^2.3.2",
+    "@types/mocha": "^10.0.1",
+    "@types/ms": "^0.7.31",
+    "@types/sinon": "^10.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^8.33.0",
+    "eslint-config-standard-with-typescript": "^33.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-mocha": "^10.1.0",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "mocha": "^10.2.0",
+    "ms": "^2.1.3",
+    "nyc": "^15.1.0",
+    "sinon": "^15.0.1",
+    "sleep-promise": "^9.1.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "argon2-browser": "^1.18.0",
+    "dayjs": "^1.11.7",
+    "jose": "^4.11.2",
+    "lodash": "^4.17.21",
+    "md5": "^2.3.0"
+  }
+}
