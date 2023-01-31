@@ -7,11 +7,11 @@ chai.use(chaiAsPromised);
 export abstract class BaseTest {
   sandbox = sinon.createSandbox();
 
-  public before() {
+  before() {
     //
   }
 
-  public after() {
+  after() {
     sinon.restore();
   }
 }

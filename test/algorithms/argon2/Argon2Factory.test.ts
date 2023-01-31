@@ -1,14 +1,13 @@
 import { suite, test } from '@testdeck/mocha';
 import { expect } from 'chai';
 
-import { WorkJwt, WorkJwtLocal } from '../../../src';
-import { Argon2VerifierWithJwt, Argon2VerifierWithJwtLocal } from '../../../src/algorithms';
+import { Argon2VerifierWithJwt, Argon2VerifierWithJwtLocal, WorkJwt, WorkJwtLocal } from '../../../src';
 import { BaseTest } from '../../Base.test';
 
 @suite()
-export class Argon2Test extends BaseTest {
+export class Argon2FactoryTest extends BaseTest {
   @test()
-  public jwt() {
+  jwt() {
     const privateKey = "test1";
     const publicKey = "test2";
     const alg = "HS512";
@@ -25,7 +24,7 @@ export class Argon2Test extends BaseTest {
   }
 
   @test()
-  public jwtLocal() {
+  jwtLocal() {
     const alg = "ES256";
     const expirationTime = "2m";
     const verifier = new Argon2VerifierWithJwtLocal({

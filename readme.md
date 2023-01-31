@@ -7,6 +7,8 @@
 
 Provide basic structure for creating proof of work
 
+This library are in concept stage, internal implementation may change and not ready for production.
+
 ```sh
 npm i pow-framework
 ```
@@ -56,7 +58,7 @@ const result = await worker.work(request);
 const correct = await verifier.verify(result);
 ```
 
-### Using work strategy
+### Using work condition
 
 ```ts
 import { Argon2VerifierWithJwt, Argon2Worker, TimeLimited } from 'pow-framework';
@@ -70,7 +72,7 @@ const verifier = new Argon2VerifierWithJwt({
   expirationTime: "2m",
 });
 const worker = new Argon2Worker({
-  strategy: new TimeLimited(dayjs.duration({ seconds: 10 })), // run 10 seconds
+  conditions: [new TimeLimited(dayjs.duration({ seconds: 10 }))], // run 10 seconds
 });
 const request = await verifier.generate();
 try {
@@ -83,23 +85,27 @@ try {
 }
 ```
 
-### Custom work strategy
-
-TODO
+### Custom work condition
 
 ```ts
-import { Argon2VerifierWithJwt, Argon2Worker, TimeLimited } from 'pow-framework';
+import { Argon2VerifierWithJwt, Argon2Worker, ICondition } from 'pow-framework';
 
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-dayjs.extend(duration);
+const condition = {
+  shouldContinue() {
+    return Math.random() > .5;
+  }
+
+  // optional, reset will be call once before work started
+  // reset() {
+  // }
+} as ICondition;
 
 const verifier = new Argon2VerifierWithJwt({
   privateKey: "secret",
   expirationTime: "2m",
 });
 const worker = new Argon2Worker({
-  strategy: new TimeLimited(dayjs.duration({ seconds: 10 })), // run 10 seconds
+  conditions: [condition],
 });
 const request = await verifier.generate();
 try {
@@ -162,7 +168,7 @@ const correct = await verifier.verify(result);
 
 Example of creating a MD5 proof of work by checking `md5(server_data + client_generate_randomChar).startsWith("aa")`
 
-`src/algorithms/md5` for example code
+`doc/example/md5Example` for example code
 
 ```ts
 import { Md5Verifier, Md5Worker } from 'pow-framework';
@@ -206,6 +212,7 @@ app.post('/pow/verify', async (req, res) => {
   } else {
     res.status(422);
   }
+  res.end();
 });
 app.listen(3000);
 ```

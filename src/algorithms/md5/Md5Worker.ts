@@ -1,14 +1,13 @@
-import { PowResult } from './../../models/PowResult';
-import { IPowWorker } from './../../framework';
-import { PowRequest } from './../../models';
+import { IPowWorker } from '../../framework';
 import { Md5 } from './Md5';
+import { Md5Request, Md5Result } from './models';
 
 export class Md5Worker extends Md5 implements IPowWorker {
-  work(request: PowRequest) {
-    const result = new PowResult(request.data, "");
+  work(request: Md5Request) {
+    const result = new Md5Result(request.data, "");
     do {
       result.result = this.#randomString();
-    } while (!this.verify(result));
+    } while (!this.verify(result, request.option));
     return result;
   }
 

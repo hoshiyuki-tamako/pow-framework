@@ -10,7 +10,7 @@ import { WorkJwt } from './../../src';
 @suite()
 export class WorkJwtTest extends BaseTest {
   @test()
-  public option() {
+  option() {
     const privateKey = "test1";
     const publicKey = "test2";
     const alg = "HS512";
@@ -25,7 +25,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async noOption() {
+  async noOption() {
     const workGenerator = new WorkJwt();
     const data = await workGenerator.generate();
     expect(await workGenerator.verify(data)).true;
@@ -33,14 +33,14 @@ export class WorkJwtTest extends BaseTest {
 
 
   @test()
-  public async emptyPrivateKey() {
+  async emptyPrivateKey() {
     const workGenerator = new WorkJwt({ privateKey: "" });
     const data = await workGenerator.generate();
     expect(await workGenerator.verify(data)).true;
   }
 
   @test()
-  public async emptyPublicKey() {
+  async emptyPublicKey() {
     const workGenerator = new WorkJwt({ privateKey: "abc" });
     workGenerator.publicKey = undefined;
     const data = await workGenerator.generate();
@@ -48,7 +48,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async expirationTime() {
+  async expirationTime() {
     const workGenerator = new WorkJwt({
       privateKey: "secret1",
       expirationTime: "1s",
@@ -62,7 +62,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async privateKeyString() {
+  async privateKeyString() {
     const workGenerator = new WorkJwt({
       privateKey: "123",
     });
@@ -75,7 +75,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async publicKeyString() {
+  async publicKeyString() {
     const workGenerator = new WorkJwt({
       privateKey: "123",
       publicKey: "abc",
@@ -89,7 +89,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async generate() {
+  async generate() {
     const privateKey = new TextEncoder().encode("secret");
     const workGenerator = new WorkJwt({
       privateKey,
@@ -101,7 +101,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async verify() {
+  async verify() {
     const privateKey = new TextEncoder().encode("secret");
     const alg = "HS256";
     const workGenerator = new WorkJwt({
@@ -116,7 +116,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async verifyFail() {
+  async verifyFail() {
     const workGenerator = new WorkJwt({
       privateKey: "123",
     });
@@ -125,7 +125,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async verifyDifferentSecret() {
+  async verifyDifferentSecret() {
     const workGenerator1 = new WorkJwt({
       privateKey: "secret1",
     });
@@ -138,7 +138,7 @@ export class WorkJwtTest extends BaseTest {
   }
 
   @test()
-  public async generateVerify() {
+  async generateVerify() {
     const workGenerator = new WorkJwt({
       privateKey: "test",
     });

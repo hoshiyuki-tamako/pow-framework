@@ -1,20 +1,21 @@
-import { Argon2Result } from './models/Argon2Result';
 import { ArgonType, verify } from 'argon2-browser';
 import { clamp } from 'lodash';
 
-import { Argon2Option } from './types/index';
+import { Argon2Result } from './models/Argon2Result';
+import { Argon2Option } from './types';
 
-export type ComplexityRange = 0 | 1;
+export type Argon2ComplexityRange = 0 | 1;
 
 export abstract class Argon2 {
   static readonly defaultOption = {
     complexityRange: [0, 1] as [number, number],
-    complexity: 1 as ComplexityRange,
+    complexity: 1 as Argon2ComplexityRange,
     argon2: {
       type: ArgonType.Argon2id,
       mem: 1024,
-      time: 1,
+      time: 2,
       parallelism: 1,
+      hashLen: 8,
     },
   };
 
@@ -29,7 +30,7 @@ export abstract class Argon2 {
     this.option.complexity = clamp(
       option?.complexity ?? Argon2.defaultOption.complexity,
       ...Argon2.defaultOption.complexityRange,
-    ) as ComplexityRange;
+    ) as Argon2ComplexityRange;
     this.option.argon2.type = option?.argon2?.type ?? Argon2.defaultOption.argon2.type;
   }
 
@@ -51,10 +52,10 @@ export abstract class Argon2 {
   }
 
   verifyStructure(result: Argon2Result, option?: Partial<Argon2Option>) {
-    return !!result.result.match(this.#getComplexityVerifyRegex(option));
+    return !!result.result.match(this.#getRegex(option));
   }
 
-  #getComplexityVerifyRegex(option?: Partial<Argon2Option>) {
+  #getRegex(option?: Partial<Argon2Option>) {
     const typeName = (() => {
       switch (option?.argon2?.type ?? this.option.argon2.type) {
         case ArgonType.Argon2d:
@@ -67,13 +68,13 @@ export abstract class Argon2 {
       }
     })();
 
-    const base = `^\\$${typeName}(\\$[\\w,=]+){2}\\$`;
+    const base = `^\\$${typeName}(\\$[\\w,=]+){3}\\$`;
     switch (option?.complexity ?? this.option.complexity) {
       case 0:
-        return new RegExp(`${base}[a-z]{6}`, 'g');
+        return new RegExp(`${base}[a-z]{4}`, 'g');
       case 1:
       default:
-        return new RegExp(`${base}[a-z]{8}`, 'g');
+        return new RegExp(`${base}[a-z]{5}`, 'g');
     }
   }
 

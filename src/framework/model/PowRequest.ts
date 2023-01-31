@@ -22,3 +22,16 @@ export abstract class PowRequestWithOption<TData = string, TOption = Record<stri
     this.option = option;
   }
 }
+
+export interface ComplexityOption<TComplexity = number> extends Record<string, unknown> {
+  complexity: TComplexity;
+}
+
+export abstract class PowRequestWithDefaultOption<TData = string, TOption = ComplexityOption> extends PowRequest<TData> {
+  option: TOption;
+
+  constructor(data: TData, option: TOption) {
+    super(data);
+    this.option = option;
+  }
+}

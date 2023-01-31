@@ -11,7 +11,7 @@ dayjs.extend(duration);
 @suite()
 export class WorkEmptyTest extends BaseTest {
   @test()
-  public generateVerify() {
+  generateVerify() {
     const workGenerator = new WorkEmpty();
     const data = workGenerator.generate();
     expect(data).empty;

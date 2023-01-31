@@ -3,15 +3,19 @@ import { expect } from 'chai';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
-import { IWorkGenerator, PowOverworkError, TimeLimited, WorkJwt } from '../src';
 import {
   Argon2Verifier,
   Argon2VerifierWithJwt,
   Argon2VerifierWithJwtLocal,
   Argon2Worker,
+  ICondition,
+  IWorkGenerator,
   Md5Verifier,
   Md5Worker,
-} from '../src/algorithms';
+  PowOverworkError,
+  TimeLimited,
+  WorkJwt,
+} from '../src';
 import { BaseTest } from './Base.test';
 
 dayjs.extend(duration);
@@ -19,7 +23,7 @@ dayjs.extend(duration);
 @suite()
 export class ExampleTest extends BaseTest {
   @test()
-  public async localMachine() {
+  async localMachine() {
     const verifier = new Argon2VerifierWithJwtLocal();
     const worker = new Argon2Worker();
     const request = await verifier.generate();
@@ -29,7 +33,7 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public async multipleMachine() {
+  async multipleMachine() {
     const verifier = new Argon2VerifierWithJwt({
       privateKey: "secret", // secret must be same across all verify servers
     });
@@ -41,7 +45,7 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public async customExpirationTime() {
+  async customExpirationTime() {
     const verifier = new Argon2VerifierWithJwt({
       privateKey: "secret",
       expirationTime: "2m",  // https://www.npmjs.com/package/ms
@@ -54,13 +58,13 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public async usingWorkStrategy() {
+  async usingWorkCondition() {
     const verifier = new Argon2VerifierWithJwt({
       privateKey: "secret",
       expirationTime: "2m",
     });
     const worker = new Argon2Worker({
-      strategy: new TimeLimited(dayjs.duration({ seconds: 10 })), // run 10 seconds
+      conditions: [new TimeLimited(dayjs.duration({ seconds: 10 }))], // run 10 seconds
     });
     const request = await verifier.generate();
     try {
@@ -75,14 +79,23 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public async customWorkStrategy() {
-    // TODO
+  async customWorkConditions() {
+    const condition = {
+      shouldContinue() {
+        return Math.random() > .5;
+      }
+
+      // optional, reset will be call once before work started
+      // reset() {
+      // }
+    } as ICondition;
+
     const verifier = new Argon2VerifierWithJwt({
       privateKey: "secret",
       expirationTime: "2m",
     });
     const worker = new Argon2Worker({
-      strategy: new TimeLimited(dayjs.duration({ seconds: 10 })), // run 10 seconds
+      conditions: [condition],
     });
     const request = await verifier.generate();
     try {
@@ -97,7 +110,7 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public async usingWorkGenerator() {
+  async usingWorkGenerator() {
     const workGenerator = new WorkJwt({
       privateKey: "secret"
     });
@@ -110,7 +123,7 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public async customRequestGenerator() {
+  async customRequestGenerator() {
     const workGenerator = {
       generate() {
         return new Date().toString();
@@ -129,7 +142,7 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  public customAlgorithm() {
+  customAlgorithm() {
     const verifier = new Md5Verifier();
     const worker = new Md5Worker();
     const request = verifier.generate();
