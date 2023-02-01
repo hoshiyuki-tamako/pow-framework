@@ -1,7 +1,0 @@
-{
-  "include": [],
-  "compilerOptions": {
-    "composite": true,
-    "types": ["esnext"]
-  }
-}

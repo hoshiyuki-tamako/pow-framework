@@ -8,12 +8,10 @@ module.exports = {
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:mocha/recommended",
   ],
-  overrides: [],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json"],
+    project: ["./tsconfig.eslint.json", "./tsconfig.json"],
+    tsconfigRootDir: __dirname,
   },
   plugins: ["@typescript-eslint", "mocha"],
   rules: {
