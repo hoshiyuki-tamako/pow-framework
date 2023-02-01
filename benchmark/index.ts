@@ -12,7 +12,7 @@ export class Init {
       Md5Benchmark.generate(),
       Argon2Benchmark.generate()
     ]);
-    ;
+    
     for (const [name, benchmark] of Object.entries(Object.assign(...works))) {
       bench.add(name, async () => await benchmark.work());
     }
