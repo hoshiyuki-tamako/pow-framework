@@ -1,11 +1,10 @@
-import { WorkString } from './../../../src/generators/WorkString';
 import { suite, test } from '@testdeck/mocha';
 import { expect } from 'chai';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
 import { BaseTest } from '../../Base.test';
-import { Md5Verifier, Md5Worker } from './../../../src';
+import { Md5Verifier, Md5Worker, WorkString } from '../../../src';
 
 dayjs.extend(duration);
 

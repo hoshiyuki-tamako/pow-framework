@@ -1,7 +1,7 @@
 import { ArgonType, verify } from 'argon2-browser';
 import { clamp } from 'lodash';
 
-import { Argon2Result } from './models/Argon2Result';
+import { Argon2Result } from './models';
 import { Argon2Option } from './types';
 
 export type Argon2ComplexityRange = 0 | 1;

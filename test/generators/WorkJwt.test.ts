@@ -5,7 +5,7 @@ import ms from 'ms';
 import sleep from 'sleep-promise';
 
 import { BaseTest } from '../Base.test';
-import { WorkJwt } from './../../src';
+import { WorkJwt } from '../../src';
 
 @suite()
 export class WorkJwtTest extends BaseTest {

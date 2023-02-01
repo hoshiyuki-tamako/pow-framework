@@ -1,6 +1,6 @@
 import md5 from 'md5';
 
-import { PowResult } from './../../framework';
+import { PowResult } from '../../framework';
 
 export abstract class Md5 {
   verify(result: PowResult) {

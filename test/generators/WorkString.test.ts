@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
 import { BaseTest } from '../Base.test';
-import { WorkString } from './../../src';
+import { WorkString } from '../../src';
 
 dayjs.extend(duration);
 

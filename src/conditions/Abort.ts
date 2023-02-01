@@ -1,4 +1,4 @@
-import { ICondition } from './../framework';
+import { ICondition } from '../framework';
 
 export interface AbortOption {
   signal: AbortSignal;
