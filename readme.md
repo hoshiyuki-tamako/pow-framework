@@ -7,7 +7,7 @@
 
 Provide basic structure for creating proof of work
 
-This library are in concept stage, internal implementation may change and not ready for production.
+This library in concept stage, internal implementation may change and not ready for production.
 
 ```sh
 npm i pow-framework
