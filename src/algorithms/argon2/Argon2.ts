@@ -70,11 +70,11 @@ export abstract class Argon2 {
 
     const base = `^\\$${typeName}(\\$[\\w,=]+){3}\\$`;
     switch (option?.complexity ?? this.option.complexity) {
-      case 0:
-        return new RegExp(`${base}[a-z]{4}`, 'g');
       case 1:
-      default:
         return new RegExp(`${base}[a-z]{5}`, 'g');
+      case 0:
+      default:
+        return new RegExp(`${base}[a-z]{4}`, 'g');
     }
   }
 
