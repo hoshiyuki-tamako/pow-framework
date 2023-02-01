@@ -1,4 +1,4 @@
-import { IPowRequest, IPowResult } from './model/index';
+import { IPowRequest, IPowResult } from './model';
 
 export interface IPowVerifier<
   TPowRequest extends IPowRequest = IPowRequest,

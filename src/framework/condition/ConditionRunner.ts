@@ -1,4 +1,4 @@
-import { PowOverworkError } from './../errors';
+import { PowOverworkError } from '../error';
 import { ICondition } from './Condition';
 
 export interface ConditionRunnerOption {

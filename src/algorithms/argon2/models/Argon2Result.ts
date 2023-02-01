@@ -1,4 +1,4 @@
-import { PowResult } from '../../../framework/model/index';
+import { PowResult } from '../../../framework';
 
 export class Argon2Result extends PowResult {
 
