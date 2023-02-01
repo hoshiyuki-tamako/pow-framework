@@ -1,18 +1,19 @@
-import { cloneDeep } from 'lodash';
-
-import { IPowVerifier } from '../../framework';
-import { WorkString } from '../../generators';
+import { IPowOption, IPowVerifier, IWorkGenerator, PowRequest, PowResult } from '../../framework';
 import { Md5 } from './Md5';
-import { Md5Request, Md5Result } from './models';
 
-export class Md5Verifier extends Md5 implements IPowVerifier {
-  workGenerator = new WorkString();
+export class Md5Verifier extends Md5 implements IPowVerifier, IPowOption {
+  workGenerator: IWorkGenerator;
 
-  generate() {
-    return new Md5Request(this.workGenerator.generate(), cloneDeep(this.option));
+  constructor(option: IPowOption) {
+    super();
+    this.workGenerator = option.workGenerator;
   }
 
-  verify(result: Md5Result) {
-    return super.verify(result) && this.workGenerator.verify(result.data);
+  async generate() {
+    return new PowRequest(await this.workGenerator.generate());
+  }
+
+  async verify(result: PowResult) {
+    return await super.verify(result) && await this.workGenerator.verify(result.data);
   }
 }

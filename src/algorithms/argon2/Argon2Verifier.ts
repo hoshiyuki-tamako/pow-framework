@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 
-import { IPowVerifier, IWorkGenerator } from '../../framework';
+import { IPowOption, IPowVerifier, IWorkGenerator } from '../../framework';
 import { Argon2 } from './Argon2';
 import { Argon2Request, Argon2Result } from './models';
 import { Argon2Option } from './types';
@@ -9,7 +9,7 @@ export interface Argon2VerifierOption<TWorkGenerator extends IWorkGenerator = IW
   workGenerator: TWorkGenerator;
 }
 
-export class Argon2Verifier<TWorkGenerator extends IWorkGenerator = IWorkGenerator> extends Argon2 implements IPowVerifier {
+export class Argon2Verifier<TWorkGenerator extends IWorkGenerator = IWorkGenerator> extends Argon2 implements IPowVerifier, IPowOption {
   workGenerator: TWorkGenerator;
 
   constructor(option: Argon2VerifierOption<TWorkGenerator>) {

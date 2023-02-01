@@ -1,27 +1,28 @@
-import { Md5ComplexityRange, Md5Verifier, Md5Worker } from '../src/algorithms';
-import { Md5 } from './../src';
+import { Md5VerifierWithJwtLocal, Md5Worker, PowRequest } from '../src';
+import { Benchmark } from './BaseBenchmark';
 
-export class Md5Benchmark {
-  static generate() {
-    let i = Md5.defaultOption.complexityRange.at(-1) as number;
-    const tests = {} as Record<string, Md5Benchmark>;
-    while (i-- > 0) {
-      const test = new this(i as Md5ComplexityRange);
-      tests[`md5-${i}`] = test;
-    }
-    return tests;
+export class Md5Benchmark implements Benchmark {
+  static async generate() {
+    return {
+      "md5": await new this().init(),
+    };
   }
 
-  #verifier = new Md5Verifier();
+  #verifier: Md5VerifierWithJwtLocal;
+  #data!: PowRequest;
+
   #worker = new Md5Worker();
 
-  #data = this.#verifier.generate();
-
-  constructor(complexity: Md5ComplexityRange) {
-    this.#verifier = new Md5Verifier({ complexity });
+  constructor() {
+    this.#verifier = new Md5VerifierWithJwtLocal();
   }
 
-  work() {
-    return this.#worker.work(this.#data);
+  async init() {
+    this.#data = await this.#verifier.generate();
+    return this;
+  }
+
+  async work() {
+    await this.#worker.work(this.#data);
   }
 }

@@ -15,6 +15,7 @@ import {
   PowOverworkError,
   TimeLimited,
   WorkJwt,
+  WorkString,
 } from '../src';
 import { BaseTest } from './Base.test';
 
@@ -142,12 +143,14 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  customAlgorithm() {
-    const verifier = new Md5Verifier();
+  async customAlgorithm() {
+    const verifier = new Md5Verifier({
+      workGenerator: new WorkString(),
+    });
     const worker = new Md5Worker();
-    const request = verifier.generate();
-    const result = worker.work(request);
-    const correct = verifier.verify(result);
+    const request = await verifier.generate();
+    const result = await worker.work(request);
+    const correct = await verifier.verify(result);
     expect(correct).true;
   }
 }

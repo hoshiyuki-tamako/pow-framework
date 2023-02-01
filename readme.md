@@ -166,18 +166,20 @@ const correct = await verifier.verify(result);
 
 ### Custom algorithm
 
-Example of creating a MD5 proof of work by checking `md5(server_data + client_generate_randomChar).startsWith("aa")`
+Example of creating a MD5 proof of work by checking `md5(server_data + client_randomChar).match(/^[a-z]{12}/)`
 
-`doc/example/md5Example` for example code
+`src/algorithms/md5` for example code
 
 ```ts
-import { Md5Verifier, Md5Worker } from 'pow-framework';
+import { Md5Verifier, Md5Worker, WorkString } from 'pow-framework';
 
-const verifier = new Md5Verifier();
+const verifier = new Md5Verifier({
+  workGenerator: new WorkString(),
+});
 const worker = new Md5Worker();
-const request = verifier.generate();
-const result = worker.work(request);
-const correct = verifier.verify(result);
+const request = await verifier.generate();
+const result = await worker.work(request);
+const correct = await verifier.verify(result);
 ```
 
 ### Web server example
