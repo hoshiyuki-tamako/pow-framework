@@ -1,3 +1,4 @@
+import { PowUnsupportedGenerateType } from './../src/framework/error/PowUnsupportedGenerateType';
 import { suite, test } from '@testdeck/mocha';
 import { expect } from 'chai';
 import dayjs from 'dayjs';
@@ -124,12 +125,42 @@ export class ExampleTest extends BaseTest {
   }
 
   @test()
-  async customRequestGenerator() {
+  async customWorkGenerator() {
     const workGenerator = {
       generate() {
         return new Date().toString();
       },
       verify(data: string) {
+        return isFinite(+new Date(data));
+      }
+    } as IWorkGenerator;
+
+    const verifier = new Argon2Verifier({ workGenerator });
+    const worker = new Argon2Worker();
+    const request = await verifier.generate();
+    const result = await worker.work(request);
+    const correct = await verifier.verify(result);
+    expect(correct).true;
+  }
+
+  @test()
+  async customWorkGeneratorWithReturnType() {
+    const workGenerator = {
+      generate(option?: { type: "string" | "number" | "date" }) {
+        const type = option?.type;
+        const date = new Date();
+        // check if type === null || type === undefined, assume user want type === string
+        if (!type || type === "string") {
+          return date.toString();
+        } else if (type === "number") {
+          return +date;
+        } else if (type === "date") {
+          return date;
+        } else {
+          throw new PowUnsupportedGenerateType();
+        }
+      },
+      verify(data: string | number | Date) {
         return isFinite(+new Date(data));
       }
     } as IWorkGenerator;

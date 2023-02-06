@@ -1,4 +1,4 @@
-export interface IWorkGenerator<TData = string> {
-  generate(): TData | Promise<TData>;
-  verify(data: TData): boolean | Promise<boolean>;
+export interface IWorkGenerator<TData = string, TOption = unknown> {
+  generate(option?: TOption): TData | Promise<TData>;
+  verify(data: TData, option?: TOption): boolean | Promise<boolean>;
 }

@@ -2,7 +2,7 @@ export interface IPowRequest<TData = string> {
   data: TData;
 }
 
-export interface IPowRequestWithOption<TData = string, TOption = Record<string, unknown>> extends IPowRequest<TData> {
+export interface IPowRequestWithOption<TData = string, TOption = unknown> extends IPowRequest<TData> {
   option: TOption;
 }
 
@@ -14,7 +14,7 @@ export class PowRequest<TData = string> implements IPowRequest<TData> {
   }
 }
 
-export abstract class PowRequestWithOption<TData = string, TOption = Record<string, unknown>> extends PowRequest<TData> {
+export abstract class PowRequestWithOption<TData = string, TOption = unknown> extends PowRequest<TData> {
   option: TOption;
 
   constructor(data: TData, option: TOption) {
@@ -23,6 +23,6 @@ export abstract class PowRequestWithOption<TData = string, TOption = Record<stri
   }
 }
 
-export interface ComplexityOption<TComplexity = number> extends Record<string, unknown> {
+export interface ComplexityOption<TComplexity = number> {
   complexity: TComplexity;
 }
