@@ -164,6 +164,37 @@ const result = await worker.work(request);
 const correct = await verifier.verify(result);
 ```
 
+### Custom work generator with  different return type
+
+```ts
+import { IWorkGenerator, PowUnsupportedGenerateType, Argon2Verifier, Argon2Worker } from 'pow-framework';
+
+const workGenerator = {
+  generate({ type }: { type: "string" | "number" | "date" }) {
+    const date = new Date();
+    // check if type === null || type === undefined, assume user want type === string
+    if (!type || type === "string") {
+      return date.toString();
+    } else if (type === "number") {
+      return +date;
+    } else if (type === "date") {
+      return date;
+    } else {
+      throw new PowUnsupportedGenerateType();
+    }
+  },
+  verify(data: string | number | Date) {
+    return isFinite(+new Date(data));
+  }
+} as IWorkGenerator;
+
+const verifier = new Argon2Verifier({ workGenerator });
+const worker = new Argon2Worker();
+const request = await verifier.generate();
+const result = await worker.work(request);
+const correct = await verifier.verify(result);
+```
+
 ### Custom algorithm
 
 Example of creating a MD5 proof of work by checking `md5(server_data + client_randomChar).match(/^[a-z]{12}/)`
